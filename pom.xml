@@ -15,7 +15,7 @@
         <flyway.version>10.21.0</flyway.version>
         <selenium.version>4.25.0</selenium.version>
         <jackson.version>2.18.1</jackson.version>
-        <logback.version>1.5.18</logback.version>
+        <logback.version>1.5.19</logback.version>
         <tomcat.version>11.0.8</tomcat.version>
         <xmlunit.verison>2.10.3</xmlunit.verison>
         <json.version>2.5.2</json.version>
