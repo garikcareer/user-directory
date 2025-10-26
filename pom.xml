@@ -15,8 +15,7 @@
         <flyway.version>10.21.0</flyway.version>
         <selenium.version>4.25.0</selenium.version>
         <jackson.version>2.18.1</jackson.version>
-        <logback.version>1.5.18</logback.version>
-        <tomcat.version>11.0.8</tomcat.version>
+        <logback.version>1.5.19</logback.version>
         <xmlunit.verison>2.10.3</xmlunit.verison>
         <json.version>2.5.2</json.version>
         <project.encoding>UTF-8</project.encoding>
@@ -29,7 +28,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.5</version>
+        <version>3.5.7</version>
     </parent>
 
     <dependencies>
@@ -88,11 +87,6 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
             <version>${logback.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-core</artifactId>
-            <version>${tomcat.version}</version>
         </dependency>
         <dependency>
             <groupId>net.minidev</groupId>
