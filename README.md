@@ -1,4 +1,4 @@
-# Company Compass — Example Web Application
+# UserDirectory — Example Web Application
 ## Table of Contents
 - [Introduction](#introduction)
 - [Features](#features)
@@ -8,7 +8,7 @@
 - [Contributing](#contributing)
 
 ## Introduction
-A Spring Boot and Thymeleaf-based web application for managing company data.
+A Spring Boot and Thymeleaf-based web application for managing user data.
 
 ## Features
 Spring boot web with thymeleaf, jpa, and test. Flyway database with MySQL to store the data. 

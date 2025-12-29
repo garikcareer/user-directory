@@ -1,0 +1,89 @@
+<!-- User List Page -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <h1 class="text-center mt-5 mb-4">User List</h1>
+
+            <div class="container mt-4" th:if="${not #lists.isEmpty(userList)}">
+                <table class="table mt-4 table-hover">
+                    <thead class="table-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user : ${userList}">
+                        <th scope="row" th:text="${user.id}"></th>
+                        <td th:text="${user.name}"></td>
+                        <td th:text="${user.location}"></td>
+                        <td>
+                            <div class="d-flex">
+                                <button type="button" class="btn btn-primary mr-2" data-toggle="modal"
+                                        th:data-target="'#editUserModal' + ${user.id}">
+                                    Edit
+                                </button>
+
+                                <form th:action="@{/users/delete/{id}(id=${user.id})}" method="post">
+                                    <button type="submit" class="btn btn-danger"
+                                            onclick="return confirm('Are you sure you want to delete this user?')">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div class="modal fade" th:id="'editUserModal' + ${user.id}" tabindex="-1" role="dialog"
+                                 aria-labelledby="editUserModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+
+                                        <form th:action="@{/users/update}" method="post">
+                                            <div class="modal-body">
+                                                <input type="hidden" name="id" th:value="${user.id}"/>
+
+                                                <div class="form-group">
+                                                    <label>Name</label>
+                                                    <label>
+                                                        <input type="text" class="form-control" name="name"
+                                                               th:value="${user.name}" required>
+                                                    </label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Location</label>
+                                                    <label>
+                                                        <input type="text" class="form-control" name="location"
+                                                               th:value="${user.location}" required>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="container mt-4 text-center" th:if="${#lists.isEmpty(userList)}">
+                <div class="alert alert-warning">
+                    No users found. <a th:href="@{/users/add}">Add your first user here!</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

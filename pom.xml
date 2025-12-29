@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.companycompass</groupId>
+    <groupId>com.example</groupId>
     <name>Springboot Maven Web Application template</name>
     <artifactId>springboot-maven-webapp-template</artifactId>
     <description>An web application template which runs on a Spring boot framework with maven as build tool,
@@ -111,7 +111,6 @@
             </plugin>
         </plugins>
     </build>
-
     <licenses>
         <license>
             <name>MIT</name>

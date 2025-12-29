@@ -1,4 +1,4 @@
-package com.companycompass.controller;
+package com.example.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,20 +7,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class MainController {
-
+public class PageController {
     @GetMapping("/")
     @ModelAttribute
     public ModelAndView index(Model model) {
         model.addAttribute("content", "index");
         model.addAttribute("pageTitle", "Home");
-        return new ModelAndView("layout");
-    }
-
-    @GetMapping("/web/company/add")
-    public ModelAndView addCompany(Model model) {
-        model.addAttribute("content", "addcompany");
-        model.addAttribute("pageTitle", "Add Company");
         return new ModelAndView("layout");
     }
 

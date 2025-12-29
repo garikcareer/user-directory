@@ -1,7 +1,7 @@
-package com.companycompass.controller;
+package com.example.controller;
 
-import com.companycompass.entity.Company;
-import com.companycompass.service.CompanyService;
+import com.example.entity.User;
+import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,24 +13,23 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(path = "/api/company")
-public class CompanyRestController {
-    private final CompanyService companyService;
+@RequestMapping(path = "/api/users")
+public class UserRestController {
+    private final UserService userService;
 
     @Autowired
-    public CompanyRestController(CompanyService companyService) {
-        this.companyService = companyService;
+    public UserRestController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping(path = "/add",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> addCompany(@RequestBody Company company) {
-        companyService.addCompany(company);
-
+    public ResponseEntity<?> save(@RequestBody User user) {
+        userService.save(user);
         Map<String, Object> response = new HashMap<>();
         response.put("status", HttpStatus.OK.value());
-        response.put("message", company.getId() + " was added successfully");
+        response.put("message", user.getId() + " was added successfully");
         response.put("timestamp", System.currentTimeMillis());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -38,12 +37,11 @@ public class CompanyRestController {
     @GetMapping(path = "/get",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getCompany(@RequestParam("companyId") Long companyId) {
-        Company company = companyService.getCompanyById(companyId);
-
+    public ResponseEntity<?> getUser(@RequestParam("userId") Long userId) {
+        User user = userService.getById(userId);
         Map<String, Object> response = new HashMap<>();
         response.put("status", HttpStatus.OK.value());
-        response.put("message", company);
+        response.put("message", user);
         response.put("timestamp", System.currentTimeMillis());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -52,38 +50,38 @@ public class CompanyRestController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getCompanies() {
-        List<Company> listCompanies = companyService.getCompanies();
+        List<User> userList = userService.getUsers();
 
         Map<String, Object> response = new HashMap<>();
         response.put("status", HttpStatus.OK.value());
-        response.put("message", listCompanies);
+        response.put("message", userList);
         response.put("timestamp", System.currentTimeMillis());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping(path = "/update/{companyId}",
+    @PutMapping(path = "/update/{userId}",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateCompany(@PathVariable Long companyId, @RequestBody Company company) {
-        company.setId(companyId);
-        companyService.updateCompany(companyId, company);
+    public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User user) {
+        user.setId(userId);
+        userService.updateUser(userId, user);
 
         Map<String, Object> response = new HashMap<>();
         response.put("status", HttpStatus.OK.value());
-        response.put("message", "Company with ID (" + company.getId() + ") updated successfully with values: " + company);
+        response.put("message", "Company with ID (" + user.getId() + ") updated successfully with values: " + user);
         response.put("timestamp", System.currentTimeMillis());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping(path = "/delete/{companyId}",
+    @DeleteMapping(path = "/delete/{userId}",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> deleteCompanyById(@PathVariable Long companyId) {
-        companyService.deleteCompanyById(companyId);
+    public ResponseEntity<?> deleteUserById(@PathVariable Long userId) {
+        userService.deleteById(userId);
 
         Map<String, Object> response = new HashMap<>();
         response.put("status", HttpStatus.OK.value());
-        response.put("message", "Company with ID (" + companyId + ") deleted successfully");
+        response.put("message", "User with ID (" + userId + ") deleted successfully");
         response.put("timestamp", System.currentTimeMillis());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

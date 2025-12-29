@@ -12,7 +12,7 @@ COPY /target/springboot-maven-thymeleaf-h2-template-*.jar app.jar
 
 EXPOSE 8080
 #
-#ARG JAR_FILE=target/company-compass-0.0.1a.jar
+#ARG JAR_FILE=target/userdirectory-0.0.1a.jar
 #
-#COPY ${JAR_FILE} target/company-compass-0.0.1a.jar
+#COPY ${JAR_FILE} target/userdirectory-0.0.1a.jar
 CMD ["java","-jar","app.jar"]

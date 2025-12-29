@@ -1,4 +1,4 @@
-package com.companycompass.entity;
+package com.example.entity;
 
 
 import jakarta.persistence.Entity;
@@ -9,8 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 
 @Entity
-@Table
-public class Company {
+@Table(name = "users")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,13 +21,17 @@ public class Company {
     @Column
     private String location;
 
-    public Company() {
+    @Column
+    private String email;
+
+    public User() {
 
     }
 
-    public Company(String name, String location) {
+    public User(String name, String location, String email) {
         this.name = name;
         this.location = location;
+        this.email = email;
     }
 
     public Long getId() {
@@ -52,5 +56,13 @@ public class Company {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
