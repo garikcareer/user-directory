@@ -1,4 +1,5 @@
 # UserDirectory — Example Web Application
+
 ## Table of Contents
 - [Introduction](#introduction)
 - [Features](#features)
@@ -8,38 +9,46 @@
 - [Contributing](#contributing)
 
 ## Introduction
-A Spring Boot and Thymeleaf-based web application for managing user data.
+A lightweight Spring Boot and Thymeleaf-based web application for managing user data. This project demonstrates a clean, server-side rendered architecture using pure CSS and no external frontend frameworks.
 
 ## Features
-Spring boot web with thymeleaf, jpa, and test. Flyway database with MySQL to store the data. 
+* **Core Stack:** Spring Boot Web, Spring Data JPA, and Thymeleaf.
+* **Database:** H2 (In-memory) with Flyway for version control and migrations.
+* **Styling:** Custom, responsive CSS (No Bootstrap).
+* **Testing:** JUnit 5 and MockMvc integration tests.
 
 ## Technologies Used
-- **Languages**: Java, JavaScript and CSS
-- **Framework**: Spring Boot
-- **Database**: H2
-- **Others**: Thymeleaf and Flyway
+- **Languages**: Java 17+, HTML5, CSS3
+- **Framework**: Spring Boot 3.x
+- **Database**: H2 Database Engine
+- **Tools**: Maven, Flyway
 
 ## Usage
-#### Ensure all maven modules are installed and the project is fully indexed before executing.
-#### Use the latest JDK version (JDK 22) for the project.
+#### Prerequisites
+Ensure all Maven modules are installed and the project is fully indexed before executing.
+* **Java Version**: Use JDK 17 or later.
 
-To execute an example application CompanyCompass, you need to run a java file named Application.java
-(Path location from a source project: **com/companycompass/Application.java**)
+#### Running the App
+To execute the **UserDirectory** application, run the main class `Application.java`.
+
+**Source Path**: `src/main/java/com/example/Application.java`
+
+Once started, the application will automatically attempt to open your default browser to:
+`http://localhost:8080`
 
 ## Screenshots
-### CompanyCompass Homepage
-![Alt text](.github/screenshots/CompanyCompass_Homepage.png "CompanyCompass Homepage")
-### CompanyCompass View Companies Page
-![Alt text](.github/screenshots/CompanyCompass_ViewCompanies.png "CompanyCompass View Companies Page")
+### UserDirectory Users Page
+![UserDirectory Homepage](.github/screenshots/UserDirectory_Users_Page.png "UserDirectory Homepage")
+
+### UserDirectory View Users Page
+![UserDirectory List](.github/screenshots/UserDirectory_Add_New_User_Page.png "UserDirectory View Users Page")
 
 ## Contributing
-For contributing or using the software, please contact me to make a change.
+This is an example project. For contributing or using the software, please contact the owner to request changes.
 
 ## References
-* [Maven](https://maven.apache.org/)
 * [Maven Repository](https://mvnrepository.com/)
-* [Spring](https://spring.io/)
-* [Flyway](https://flywaydb.org/)
+* [Spring Boot](https://spring.io/projects/spring-boot)
 * [Thymeleaf](https://www.thymeleaf.org/)
-* [Docker](https://docs.docker.com/)
-* [Bootstrap](https://getbootstrap.com/)
+* [H2 Database](https://www.h2database.com/)
+* [Flyway](https://flywaydb.org/)

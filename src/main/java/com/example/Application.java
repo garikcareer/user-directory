@@ -22,8 +22,14 @@ public class Application {
         logger.info("Application started successfully");
     }
 
+    // Automatic opening only if run, for tests it is ignored
     @EventListener(ApplicationReadyEvent.class)
     public void openBrowser() {
+        String command = System.getProperty("sun.java.command");
+        if (command != null && (command.contains("junit") || command.contains("surefire"))) {
+            return;
+        }
+
         String url = "http://localhost:8080";
         System.out.println("Application started. Opening browser: " + url);
 

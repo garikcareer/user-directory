@@ -1,0 +1,309 @@
+{
+	"info": {
+		"_postman_id": "44ddb3fd-9063-4646-8868-08c3b9ddbcd8",
+		"name": "UserDirectory API TEST",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33429139"
+	},
+	"item": [
+		{
+			"name": "CREATE",
+			"item": [
+				{
+					"name": "addUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"JSON status field is 200\", function () {\r",
+									"    pm.expect(jsonData.status).to.eql(200);\r",
+									"});\r",
+									"pm.test(\"Message confirms user was added\", function () {\r",
+									"    pm.expect(jsonData.message).to.match(/^\\d+ was added successfully$/);\r",
+									"});\r",
+									"pm.test(\"Timestamp is present\", function () {\r",
+									"    pm.expect(jsonData.timestamp).to.be.a(\"number\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Sarah Jenskins\",\r\n    \"location\": \"Seattle, WA\",\r\n    \"email\": \"sarah.jenkins@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "READ",
+			"item": [
+				{
+					"name": "getUsers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response has correct metadata\", function () {",
+									"    pm.expect(jsonData.status).to.eql(200);",
+									"    pm.expect(jsonData.timestamp).to.be.a(\"number\");",
+									"});",
+									"pm.test(\"Message is a list of users\", function () {",
+									"    pm.expect(jsonData.message).to.be.an(\"array\");",
+									"    pm.expect(jsonData.message.length).to.be.above(0); // Ensure list is not empty",
+									"});",
+									"pm.test(\"All users have id, name, location, and email\", function () {",
+									"    jsonData.message.forEach(function(user) {",
+									"        pm.expect(user).to.have.property(\"id\");",
+									"        pm.expect(user).to.have.property(\"name\");",
+									"        pm.expect(user).to.have.property(\"location\");",
+									"        pm.expect(user).to.have.property(\"email\");",
+									"    });",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/get/all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"get",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUserById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response has correct metadata\", function () {\r",
+									"    pm.expect(jsonData.status).to.eql(200);\r",
+									"    pm.expect(jsonData.timestamp).to.be.a(\"number\");\r",
+									"});\r",
+									"pm.test(\"Message is a single user object\", function () {\r",
+									"    pm.expect(jsonData.message).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData.message).to.not.be.an(\"array\");\r",
+									"});\r",
+									"pm.test(\"User has all required fields\", function () {\r",
+									"    var user = jsonData.message;\r",
+									"    pm.expect(user).to.have.property(\"id\");\r",
+									"    pm.expect(user).to.have.property(\"name\");\r",
+									"    pm.expect(user).to.have.property(\"location\");\r",
+									"    pm.expect(user).to.have.property(\"email\");\r",
+									"});\r",
+									"pm.test(\"Returned User ID is correct\", function () {\r",
+									"    var requestedId = parseInt(pm.request.url.query.get(\"userId\"));\r",
+									"    if (!isNaN(requestedId)) {\r",
+									"        pm.expect(jsonData.message.id).to.eql(requestedId);\r",
+									"    } else {\r",
+									"        console.log(\"Could not parse userId from query parameters for validation.\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/get?userId=2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"get"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UPDATE",
+			"item": [
+				{
+					"name": "updateUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"JSON status is 200\", function () {",
+									"    pm.expect(jsonData.status).to.eql(200);",
+									"});",
+									"pm.test(\"Message confirms user was updated\", function () {",
+									"    pm.expect(jsonData.message).to.match(/^User with ID \\(\\d+\\) updated successfully\\.$/);",
+									"});",
+									"pm.test(\"Timestamp is present\", function () {",
+									"    pm.expect(jsonData.timestamp).to.be.a(\"number\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Bob Smith Updated\",\r\n    \"location\": \"Los Angeles\",\r\n    \"email\": \"bob@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/users/update/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"update",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DELETE",
+			"item": [
+				{
+					"name": "deleteUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"JSON status is 200\", function () {\r",
+									"    pm.expect(jsonData.status).to.eql(200);\r",
+									"});\r",
+									"pm.test(\"Message confirms user was deleted\", function () {\r",
+									"    pm.expect(jsonData.message).to.match(/^User with ID \\(\\d+\\) deleted successfully$/);\r",
+									"});\r",
+									"pm.test(\"Timestamp is present\", function () {\r",
+									"    pm.expect(jsonData.timestamp).to.be.a(\"number\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/delete/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"delete",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

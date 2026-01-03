@@ -1,51 +1,65 @@
 package com.example.controller;
 
-import com.example.entity.User;
+import com.example.model.User;
 import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(path = "/users")
 public class UserController {
+
     private final UserService userService;
+
     @Autowired
-    public UserController(UserService companyService) {
-        this.userService = companyService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    // Create
-    @GetMapping("/add")
-    public ModelAndView addUser(Model model) {
-        model.addAttribute("content", "add-user");
-        model.addAttribute("pageTitle", "Add User");
-        model.addAttribute("user", new User());
-        return new ModelAndView("layout");
-    }
-
-    // Read
+    // 1. List Users
     @GetMapping
-    @ModelAttribute
-    public ModelAndView users(Model model) {
-        model.addAttribute("content", "users");
-        model.addAttribute("pageTitle", "Users");
-        model.addAttribute("companies", userService.getUsers());
-        return new ModelAndView("layout");
+    public ModelAndView users() {
+        ModelAndView modelAndView = new ModelAndView("layout");
+        modelAndView.addObject("content", "users");
+        modelAndView.addObject("pageTitle", "Users");
+        modelAndView.addObject("userList", userService.getUsers());
+        return modelAndView;
     }
 
-    // Update
-    @PostMapping("/update/{id}")
-    public ModelAndView updateUser(Model model, @PathVariable Long id) {
-        model.addAttribute("content", "add-user");
-        model.addAttribute("pageTitle", "Edit User");
-        model.addAttribute("user", userService.getById(id));
-        return new ModelAndView("layout");
+    // 2. Show Add Form
+    @GetMapping("/add")
+    public ModelAndView showAddUserForm() {
+        ModelAndView modelAndView = new ModelAndView("layout");
+        modelAndView.addObject("content", "user-form");
+        modelAndView.addObject("pageTitle", "Add User");
+        modelAndView.addObject("user", new User());
+        return modelAndView;
     }
 
-    // Delete
+    // 3. Show Edit Form
+    @GetMapping("/edit/{id}")
+    public ModelAndView showEditForm(@PathVariable Long id) {
+        ModelAndView modelAndView = new ModelAndView("layout");
+        modelAndView.addObject("content", "user-form");
+        modelAndView.addObject("pageTitle", "Edit User");
+        modelAndView.addObject("user", userService.getById(id));
+        return modelAndView;
+    }
+
+    // 4. Save User
+    @PostMapping("/save")
+    public String saveUser(@ModelAttribute User user) {
+        if (user.getId() == null) {
+            userService.add(user);
+        } else {
+            userService.update(user);
+        }
+        return "redirect:/users";
+    }
+
+    // 5. Delete User
     @PostMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id) {
         userService.deleteById(id);

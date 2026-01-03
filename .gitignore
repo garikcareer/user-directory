@@ -1,12 +1,6 @@
 ### IntelliJ IDEA ###
 .idea/
-HELP.md
 target/
-!**/src/main/**/target/
-!**/src/test/**/target/
-*.iws
-*.iml
-*.ipr
 
 ### VS Code ###
 .vscode/

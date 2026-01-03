@@ -1,6 +1,6 @@
 package com.example.service;
 
-import com.example.entity.User;
+import com.example.model.User;
 import com.example.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +18,15 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-    // Create
     @Override
-    public void save(User user) {
+    public void add(User user) {
         userRepository.save(user);
     }
 
-    // Read
     @Override
     public User getById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("Company not found"));
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     @Override
@@ -35,19 +34,21 @@ public class UserServiceImpl implements UserService {
         return (List<User>) userRepository.findAll();
     }
 
-    // Update
     @Override
-    public void updateUser(Long userId, User user) {
-        User existingUser = userRepository.findById(userId).orElseThrow(() ->
-                new EntityNotFoundException("User not found with id: " + userId));
-        existingUser.setName(user.getName());
-        existingUser.setLocation(user.getLocation());
-        userRepository.save(existingUser);
+    public void update(User user) {
+        User existing = getById(user.getId());
+        existing.setName(user.getName());
+        existing.setLocation(user.getLocation());
+        // FIXED: Added email update
+        existing.setEmail(user.getEmail());
+        userRepository.save(existing);
     }
 
-    // Delete
     @Override
-    public void deleteById(Long userId) {
-        userRepository.deleteById(userId);
+    public void deleteById(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("Cannot delete. User not found with id: " + id);
+        }
+        userRepository.deleteById(id);
     }
 }

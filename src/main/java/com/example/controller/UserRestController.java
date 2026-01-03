@@ -1,6 +1,6 @@
 package com.example.controller;
 
-import com.example.entity.User;
+import com.example.model.User;
 import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +15,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(path = "/api/users")
 public class UserRestController {
+
     private final UserService userService;
 
     @Autowired
@@ -22,11 +23,21 @@ public class UserRestController {
         this.userService = userService;
     }
 
+    // 1. ADD USER
     @PostMapping(path = "/add",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> save(@RequestBody User user) {
-        userService.save(user);
+    public ResponseEntity<?> addUser(@RequestBody User user) {
+        // Validate Email
+        if (user.getEmail() == null || !user.getEmail().contains("@")) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", HttpStatus.BAD_REQUEST.value());
+            response.put("message", "Error: Email is invalid (must contain '@')");
+            response.put("timestamp", System.currentTimeMillis());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        userService.add(user);
         Map<String, Object> response = new HashMap<>();
         response.put("status", HttpStatus.OK.value());
         response.put("message", user.getId() + " was added successfully");
@@ -34,9 +45,9 @@ public class UserRestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // 2. GET USER BY ID
     @GetMapping(path = "/get",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUser(@RequestParam("userId") Long userId) {
         User user = userService.getById(userId);
         Map<String, Object> response = new HashMap<>();
@@ -46,12 +57,11 @@ public class UserRestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // 3. GET ALL USERS
     @GetMapping(path = "/get/all",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getCompanies() {
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getAllUsers() {
         List<User> userList = userService.getUsers();
-
         Map<String, Object> response = new HashMap<>();
         response.put("status", HttpStatus.OK.value());
         response.put("message", userList);
@@ -59,26 +69,34 @@ public class UserRestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // 4. UPDATE USER
     @PutMapping(path = "/update/{userId}",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody User user) {
-        user.setId(userId);
-        userService.updateUser(userId, user);
+        // Validate Email
+        if (user.getEmail() == null || !user.getEmail().contains("@")) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("status", HttpStatus.BAD_REQUEST.value());
+            response.put("message", "Error: Email is invalid (must contain '@')");
+            response.put("timestamp", System.currentTimeMillis());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
 
+        user.setId(userId);
+        userService.update(user);
         Map<String, Object> response = new HashMap<>();
         response.put("status", HttpStatus.OK.value());
-        response.put("message", "Company with ID (" + user.getId() + ") updated successfully with values: " + user);
+        response.put("message", "User with ID (" + user.getId() + ") updated successfully.");
         response.put("timestamp", System.currentTimeMillis());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    // 5. DELETE USER
     @DeleteMapping(path = "/delete/{userId}",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> deleteUserById(@PathVariable Long userId) {
         userService.deleteById(userId);
-
         Map<String, Object> response = new HashMap<>();
         response.put("status", HttpStatus.OK.value());
         response.put("message", "User with ID (" + userId + ") deleted successfully");
