@@ -18,7 +18,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    // 1. List Users
     @GetMapping
     public ModelAndView users() {
         ModelAndView modelAndView = new ModelAndView("layout");
@@ -28,7 +27,6 @@ public class UserController {
         return modelAndView;
     }
 
-    // 2. Show Add Form
     @GetMapping("/add")
     public ModelAndView showAddUserForm() {
         ModelAndView modelAndView = new ModelAndView("layout");
@@ -38,7 +36,6 @@ public class UserController {
         return modelAndView;
     }
 
-    // 3. Show Edit Form
     @GetMapping("/edit/{id}")
     public ModelAndView showEditForm(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView("layout");
@@ -48,7 +45,6 @@ public class UserController {
         return modelAndView;
     }
 
-    // 4. Save User
     @PostMapping("/save")
     public String saveUser(@ModelAttribute User user) {
         if (user.getId() == null) {
@@ -59,8 +55,7 @@ public class UserController {
         return "redirect:/users";
     }
 
-    // 5. Delete User
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id) {
         userService.deleteById(id);
         return "redirect:/users";

@@ -6,6 +6,7 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
+                <th>Location</th>
                 <th>Email</th>
                 <th>Action</th>
             </tr>
@@ -14,10 +15,11 @@
             <tr th:each="user : ${userList}">
                 <td th:text="${user.id}"></td>
                 <td th:text="${user.name}"></td>
+                <td th:text="${user.location}"></td>
                 <td th:text="${user.email}"></td>
                 <td>
                     <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-blue">Edit</a>
-                    <form th:action="@{/users/delete/{id}(id=${user.id})}" method="post" style="display:inline; margin-left: 5px;">
+                    <form th:action="@{/users/delete/{id}(id=${user.id})}" th:method="delete" style="display:inline; margin-left: 5px;">
                         <button type="submit" class="btn btn-red">Delete</button>
                     </form>
                 </td>
