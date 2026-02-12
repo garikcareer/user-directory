@@ -23,7 +23,6 @@ public class UserRestController {
         this.userService = userService;
     }
 
-    // 1. ADD USER
     @PostMapping(path = "/add",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -45,7 +44,6 @@ public class UserRestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // 2. GET USER BY ID
     @GetMapping(path = "/get",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getUser(@RequestParam("userId") Long userId) {
@@ -57,7 +55,6 @@ public class UserRestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // 3. GET ALL USERS
     @GetMapping(path = "/get/all",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getAllUsers() {
@@ -69,7 +66,6 @@ public class UserRestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // 4. UPDATE USER
     @PutMapping(path = "/update/{userId}",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -92,7 +88,6 @@ public class UserRestController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // 5. DELETE USER
     @DeleteMapping(path = "/delete/{userId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> deleteUserById(@PathVariable Long userId) {
