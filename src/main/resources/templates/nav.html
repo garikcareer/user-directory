@@ -1,13 +1,22 @@
-<nav th:fragment="navbarFragment" class="navbar">
+<nav th:fragment="navbarFragment" class="navbar"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <div class="navbar-content">
         <a class="navbar-brand" th:href="@{/}">User Directory</a>
 
         <ul class="nav-links">
             <li><a th:href="@{/}">Home</a></li>
-            <li><a th:href="@{/users}">View Users</a></li>
-            <li><a th:href="@{/users/add}">Add New User</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/users}">View Users</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/users/add}">Add New User</a></li>
             <li><a th:href="@{/about}">About</a></li>
             <li><a th:href="@{/contact}">Contact</a></li>
+            <li sec:authorize="!isAuthenticated()"><a th:href="@{/register}">Register</a></li>
+            <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login</a></li>
+            <li sec:authorize="isAuthenticated()" class="nav-user-info">
+                <span sec:authentication="name" class="nav-username"></span>
+                <form th:action="@{/logout}" method="post" style="display:inline; margin-left: 8px;">
+                    <button type="submit" class="btn-nav-logout">Logout</button>
+                </form>
+            </li>
         </ul>
     </div>
 </nav>

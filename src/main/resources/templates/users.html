@@ -1,12 +1,33 @@
 <div class="container">
     <h1 th:text="${pageTitle}">Users List</h1>
+
     <div th:if="${not #lists.isEmpty(userList)}">
+
+        <!-- Results summary -->
+        <p class="results-info">
+            Showing
+            <span th:text="${currentPage * 10 + 1}"></span>–<span th:text="${(currentPage * 10 + #lists.size(userList))}"></span>
+            of <span th:text="${totalElements}"></span> users
+        </p>
+
         <table class="table-styled">
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Location</th>
+                <th>
+                    <a th:href="@{/users(page=0, sortField='name', sortDir=${sortField == 'name' ? reverseSortDir : 'asc'})}"
+                       class="sort-link">
+                        Name
+                        <span th:if="${sortField == 'name'}" th:text="${sortDir == 'asc' ? ' ▲' : ' ▼'}"></span>
+                    </a>
+                </th>
+                <th>
+                    <a th:href="@{/users(page=0, sortField='location', sortDir=${sortField == 'location' ? reverseSortDir : 'asc'})}"
+                       class="sort-link">
+                        Location
+                        <span th:if="${sortField == 'location'}" th:text="${sortDir == 'asc' ? ' ▲' : ' ▼'}"></span>
+                    </a>
+                </th>
                 <th>Email</th>
                 <th>Action</th>
             </tr>
@@ -26,10 +47,28 @@
             </tr>
             </tbody>
         </table>
+
+        <!-- Pagination controls -->
+        <div th:if="${totalPages > 1}" class="pagination">
+            <a th:if="${currentPage > 0}"
+               th:href="@{/users(page=${currentPage - 1}, sortField=${sortField}, sortDir=${sortDir})}"
+               class="page-link">&laquo; Prev</a>
+
+            <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                <a th:href="@{/users(page=${i}, sortField=${sortField}, sortDir=${sortDir})}"
+                   th:text="${i + 1}"
+                   th:class="${i == currentPage} ? 'page-link page-active' : 'page-link'"></a>
+            </span>
+
+            <a th:if="${currentPage < totalPages - 1}"
+               th:href="@{/users(page=${currentPage + 1}, sortField=${sortField}, sortDir=${sortDir})}"
+               class="page-link">Next &raquo;</a>
+        </div>
+
     </div>
 
     <div th:if="${#lists.isEmpty(userList)}" style="text-align: center; margin-top: 20px;">
-        <p>No users on the database.</p>
+        <p>No users in the database.</p>
         <div class="action-bar">
             <a th:href="@{/users/add}" class="btn btn-green">Be first to add a user!</a>
         </div>
