@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.model.User;
+import com.example.service.AppUserDetailsService;
 import com.example.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 import static org.mockito.Mockito.when;
@@ -16,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = UserRestController.class,
         excludeAutoConfiguration = {SecurityAutoConfiguration.class})
+@WithMockUser
 class UserRestControllerTest {
 
     @Autowired
@@ -23,6 +26,9 @@ class UserRestControllerTest {
 
     @MockitoBean
     private UserService userService;
+
+    @MockitoBean
+    private AppUserDetailsService appUserDetailsService;
 
     @Test
     void addUser_ShouldReturn200() throws Exception {

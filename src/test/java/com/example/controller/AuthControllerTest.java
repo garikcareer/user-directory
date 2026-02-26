@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.service.AppUserDetailsService;
 import com.example.service.AuthService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -22,6 +24,9 @@ class AuthControllerTest {
 
     @MockitoBean
     private AuthService authService;
+
+    @MockitoBean
+    private AppUserDetailsService appUserDetailsService;
 
     // --- Login page ---
 
@@ -52,6 +57,7 @@ class AuthControllerTest {
         when(authService.usernameExists("newuser")).thenReturn(false);
 
         mockMvc.perform(post("/register")
+                        .with(csrf())
                         .param("username", "newuser")
                         .param("password", "securePass1"))
                 .andExpect(status().is3xxRedirection())
@@ -66,6 +72,7 @@ class AuthControllerTest {
         when(authService.usernameExists("takenuser")).thenReturn(true);
 
         mockMvc.perform(post("/register")
+                        .with(csrf())
                         .param("username", "takenuser")
                         .param("password", "securePass1"))
                 .andExpect(status().is3xxRedirection())
@@ -78,6 +85,7 @@ class AuthControllerTest {
     @Test
     void register_WithShortPassword_ShouldRedirectToRegisterWithError() throws Exception {
         mockMvc.perform(post("/register")
+                        .with(csrf())
                         .param("username", "newuser")
                         .param("password", "abc"))   // less than 6 chars
                 .andExpect(status().is3xxRedirection())
@@ -90,6 +98,7 @@ class AuthControllerTest {
     @Test
     void register_WithBlankUsername_ShouldRedirectToRegisterWithError() throws Exception {
         mockMvc.perform(post("/register")
+                        .with(csrf())
                         .param("username", "   ")
                         .param("password", "securePass1"))
                 .andExpect(status().is3xxRedirection())

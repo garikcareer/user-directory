@@ -148,6 +148,7 @@ h1, h2 {
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid #ddd;
+    vertical-align: middle;
 }
 
 .table-styled th {
@@ -159,6 +160,19 @@ h1, h2 {
 }
 
 .table-styled tr:hover { background-color: #f1f1f1; }
+
+.table-styled td.actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.table-styled td.actions form {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
 
 /* --- BUTTONS --- */
 .btn {

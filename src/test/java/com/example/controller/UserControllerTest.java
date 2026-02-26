@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.model.User;
+import com.example.service.AppUserDetailsService;
 import com.example.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -16,11 +18,13 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = UserController.class,
         excludeAutoConfiguration = {SecurityAutoConfiguration.class})
+@WithMockUser
 class UserControllerTest {
 
     @Autowired
@@ -28,6 +32,9 @@ class UserControllerTest {
 
     @MockitoBean
     private UserService userService;
+
+    @MockitoBean
+    private AppUserDetailsService appUserDetailsService;
 
     // --- List / search ---
 
@@ -106,6 +113,7 @@ class UserControllerTest {
     @Test
     void saveUser_ShouldRedirectToUsers() throws Exception {
         mockMvc.perform(post("/users/save")
+                        .with(csrf())
                         .param("name", "New User")
                         .param("location", "Test City")
                         .param("email", "test@example.com"))
@@ -115,7 +123,8 @@ class UserControllerTest {
 
     @Test
     void deleteUser_ShouldRedirectToUsers() throws Exception {
-        mockMvc.perform(delete("/users/delete/1"))
+        mockMvc.perform(delete("/users/delete/1")
+                        .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/users"));
     }
