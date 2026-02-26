@@ -24,6 +24,9 @@ public class User {
     @Column
     private String email;
 
+    @Column
+    private String phone;
+
     public User() {
 
     }
@@ -64,5 +67,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

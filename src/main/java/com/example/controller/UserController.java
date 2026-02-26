@@ -25,9 +25,10 @@ public class UserController {
     public ModelAndView users(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "name") String sortField,
-            @RequestParam(defaultValue = "asc") String sortDir) {
+            @RequestParam(defaultValue = "asc") String sortDir,
+            @RequestParam(defaultValue = "") String search) {
 
-        Page<User> userPage = userService.getUsersPage(page, PAGE_SIZE, sortField, sortDir);
+        Page<User> userPage = userService.searchUsersPage(search, page, PAGE_SIZE, sortField, sortDir);
 
         ModelAndView modelAndView = new ModelAndView("layout");
         modelAndView.addObject("content", "users");
@@ -40,6 +41,7 @@ public class UserController {
         modelAndView.addObject("sortField", sortField);
         modelAndView.addObject("sortDir", sortDir);
         modelAndView.addObject("reverseSortDir", sortDir.equalsIgnoreCase("asc") ? "desc" : "asc");
+        modelAndView.addObject("search", search);
         return modelAndView;
     }
 

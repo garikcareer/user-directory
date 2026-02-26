@@ -39,12 +39,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> getUsersPage(int page, int size, String sortField, String sortDir) {
+    public Page<User> searchUsersPage(String search, int page, int size, String sortField, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase("desc")
                 ? Sort.by(sortField).descending()
                 : Sort.by(sortField).ascending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        return userRepository.findAll(pageable);
+        if (search == null || search.isBlank()) {
+            return userRepository.findAll(pageable);
+        }
+        return userRepository.searchUsers(search.trim(), pageable);
     }
 
     @Override
@@ -52,8 +55,8 @@ public class UserServiceImpl implements UserService {
         User existing = getById(user.getId());
         existing.setName(user.getName());
         existing.setLocation(user.getLocation());
-        // FIXED: Added email update
         existing.setEmail(user.getEmail());
+        existing.setPhone(user.getPhone());
         userRepository.save(existing);
     }
 

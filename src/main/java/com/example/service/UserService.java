@@ -8,7 +8,7 @@ public interface UserService {
     void add(User user);
     User getById(Long id);
     List<User> getUsers();
-    Page<User> getUsersPage(int page, int size, String sortField, String sortDir);
+    Page<User> searchUsersPage(String search, int page, int size, String sortField, String sortDir);
     void update(User user);
     void deleteById(Long id);
 }
