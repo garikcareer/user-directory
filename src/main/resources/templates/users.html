@@ -56,8 +56,8 @@
                 <td th:text="${user.name}"></td>
                 <td th:text="${user.location}"></td>
                 <td th:text="${user.email}"></td>
-                <td th:text="${user.phone} ?: '—'"></td>
-                <td>
+                <td class="nowrap" th:text="${user.phone} ?: '—'"></td>
+                <td class="nowrap">
                     <div class="btn-group">
                         <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-blue">Edit</a>
                         <form th:action="@{/users/delete/{id}(id=${user.id})}" th:method="delete">

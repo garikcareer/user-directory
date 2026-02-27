@@ -1,6 +1,5 @@
 package com.example.controller;
 
-import com.example.config.SecurityConfig;
 import com.example.model.User;
 import com.example.service.AppUserDetailsService;
 import com.example.service.UserService;
@@ -8,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -25,11 +22,8 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(
-        controllers = UserController.class,
-        excludeAutoConfiguration = {SecurityAutoConfiguration.class},
-        excludeFilters = @ComponentScan.Filter(
-                type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class))
+@WebMvcTest(controllers = UserController.class,
+        excludeAutoConfiguration = {SecurityAutoConfiguration.class})
 @WithMockUser
 class UserControllerTest {
 

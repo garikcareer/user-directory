@@ -161,6 +161,8 @@ h1, h2 {
 
 .table-styled tr:hover { background-color: #f1f1f1; }
 
+.nowrap { white-space: nowrap; }
+
 .btn-group {
     display: flex;
     align-items: center;
