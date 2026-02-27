@@ -1,11 +1,14 @@
 package com.example.controller;
 
+import com.example.config.SecurityConfig;
 import com.example.service.AppUserDetailsService;
 import com.example.service.AuthService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -15,8 +18,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(controllers = AuthController.class,
-        excludeAutoConfiguration = {SecurityAutoConfiguration.class})
+@WebMvcTest(
+        controllers = AuthController.class,
+        excludeAutoConfiguration = {SecurityAutoConfiguration.class},
+        excludeFilters = @ComponentScan.Filter(
+                type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class))
 class AuthControllerTest {
 
     @Autowired
@@ -87,7 +93,7 @@ class AuthControllerTest {
         mockMvc.perform(post("/register")
                         .with(csrf())
                         .param("username", "newuser")
-                        .param("password", "abc"))   // less than 6 chars
+                        .param("password", "abc"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/register"))
                 .andExpect(flash().attributeExists("error"));

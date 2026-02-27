@@ -57,11 +57,13 @@
                 <td th:text="${user.location}"></td>
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.phone} ?: '—'"></td>
-                <td class="actions">
-                    <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-blue">Edit</a>
-                    <form th:action="@{/users/delete/{id}(id=${user.id})}" th:method="delete">
-                        <button type="submit" class="btn btn-red">Delete</button>
-                    </form>
+                <td>
+                    <div class="btn-group">
+                        <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-blue">Edit</a>
+                        <form th:action="@{/users/delete/{id}(id=${user.id})}" th:method="delete">
+                            <button type="submit" class="btn btn-red">Delete</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             </tbody>
