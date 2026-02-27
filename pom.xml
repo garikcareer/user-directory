@@ -15,7 +15,7 @@
         <flyway.version>10.21.0</flyway.version>
         <selenium.version>4.25.0</selenium.version>
         <jackson.version>2.18.1</jackson.version>
-        <logback.version>1.5.19</logback.version>
+        <logback.version>1.5.25</logback.version>
         <xmlunit.version>2.10.3</xmlunit.version>
         <json.version>2.5.2</json.version>
         <project.encoding>UTF-8</project.encoding>
