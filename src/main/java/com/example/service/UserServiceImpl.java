@@ -4,6 +4,10 @@ import com.example.model.User;
 import com.example.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +35,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUsers() {
-        return (List<User>) userRepository.findAll();
+        return userRepository.findAll();
+    }
+
+    @Override
+    public Page<User> searchUsersPage(String search, int page, int size, String sortField, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase("desc")
+                ? Sort.by(sortField).descending()
+                : Sort.by(sortField).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        if (search == null || search.isBlank()) {
+            return userRepository.findAll(pageable);
+        }
+        return userRepository.searchUsers(search.trim(), pageable);
     }
 
     @Override
@@ -39,8 +55,8 @@ public class UserServiceImpl implements UserService {
         User existing = getById(user.getId());
         existing.setName(user.getName());
         existing.setLocation(user.getLocation());
-        // FIXED: Added email update
         existing.setEmail(user.getEmail());
+        existing.setPhone(user.getPhone());
         userRepository.save(existing);
     }
 

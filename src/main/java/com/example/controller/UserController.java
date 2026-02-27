@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.model.User;
 import com.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -10,6 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(path = "/users")
 public class UserController {
+
+    private static final int PAGE_SIZE = 10;
 
     private final UserService userService;
 
@@ -19,11 +22,26 @@ public class UserController {
     }
 
     @GetMapping
-    public ModelAndView users() {
+    public ModelAndView users(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "name") String sortField,
+            @RequestParam(defaultValue = "asc") String sortDir,
+            @RequestParam(defaultValue = "") String search) {
+
+        Page<User> userPage = userService.searchUsersPage(search, page, PAGE_SIZE, sortField, sortDir);
+
         ModelAndView modelAndView = new ModelAndView("layout");
         modelAndView.addObject("content", "users");
         modelAndView.addObject("pageTitle", "Users");
-        modelAndView.addObject("userList", userService.getUsers());
+        modelAndView.addObject("userList", userPage.getContent());
+        modelAndView.addObject("userPage", userPage);
+        modelAndView.addObject("currentPage", page);
+        modelAndView.addObject("totalPages", userPage.getTotalPages());
+        modelAndView.addObject("totalElements", userPage.getTotalElements());
+        modelAndView.addObject("sortField", sortField);
+        modelAndView.addObject("sortDir", sortDir);
+        modelAndView.addObject("reverseSortDir", sortDir.equalsIgnoreCase("asc") ? "desc" : "asc");
+        modelAndView.addObject("search", search);
         return modelAndView;
     }
 
